@@ -87,8 +87,7 @@ Every capture file gets an `R-####` row — a file without a registry row is inv
 - **Meetings**: [`meetings/`](meetings/) — notes per meeting (Conclusions → Actions →
   Decisions → Resources). Filename `YYYY-MM-DD-topic.md`.
 - **Lessons learned**: [`lessons-learned/`](lessons-learned/) — learnings and living retros.
-- **Inbox**: [`00-inbox/`](00-inbox/) — low-friction capture, triaged into the structure later.
-- **Journal**: [`journal/`](journal/) — running personal log, `YYYY-MM-DD.md`.
+- **Journal**: [`journal/`](journal/) — running personal log (and quick untriaged notes), `YYYY-MM-DD.md`.
 - **Templates**: [`templates/`](templates/) — skeletons for every file type.
 
 ## Tasks

@@ -201,7 +201,7 @@ rank.
 ## §9 Tasks — in-KB TODOs with a deterministic priority
 
 There is no external tracker. Tasks live **in the page they belong to** (a project page, a
-domain page, or the inbox) under a `## Tasks` heading, as checkboxes:
+domain page) under a `## Tasks` heading, as checkboxes:
 
 ```
 - [ ] Confirm the venue deposit deadline | plazo: 2026-09-15 | complejidad: low | owner: @you
@@ -314,3 +314,4 @@ Record framework changes below.
 |------|--------|
 | 2026-08-27 | Template created. Borrows from PARA (§2), Johnny.Decimal cap (§3), ADR/MADR (§4), Dublin Core (§5). Subject-agnostic: people as a first-class entity (§10), in-KB tasks with a priority matrix instead of an external tracker (§9), the domain-plus-edition pattern for recurring events (§11). |
 | 2026-09-04 | Added the **access layer** `sources.md` (how to reach each external source — tool, auth, gotchas — distinct from the resource registry, §5). Documented the optional **`owner`** task field (§9). |
+| 2026-09-08 | Removed the `00-inbox/` staging directory: in an agent-native KB the agent triages captures directly, so the inbox went unused; quick untriaged notes fold into `journal/`. Dropped from the capture layer, §9, and `kb_todos.py` TASK_DIRS. |

@@ -20,7 +20,7 @@ effort. It consolidates knowledge, decisions and pending tasks for both humans a
 | Registries | [registry/](registry/) | Append-only: `R-####` resources · `D-####` decisions · `F-####` findings · `Q-####` questions · `M-####` people |
 | People | [people/](people/) | Optional per-person notes · [trackers/](people/trackers/) outreach funnels |
 | Teams | [teams/](teams/) | Optional working-group pages (`WG-####` / short code) |
-| Capture | [meetings/](meetings/) · [lessons-learned/](lessons-learned/) · [00-inbox/](00-inbox/) · [journal/](journal/) | Raw inputs; every capture file gets an `R-####` row |
+| Capture | [meetings/](meetings/) · [lessons-learned/](lessons-learned/) · [journal/](journal/) | Raw inputs; every capture file gets an `R-####` row |
 | Reference | [context.md](context.md) · [sources.md](sources.md) · [glossary.md](glossary.md) | Current state of the subject; how to reach external sources (auth, gotchas); terms and controlled vocabulary |
 | Templates | [templates/](templates/) | Skeleton for every file type |
 

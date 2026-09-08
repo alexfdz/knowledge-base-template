@@ -23,7 +23,7 @@ NO_DATE = "9999-99-99"
 
 # Tasks live in these areas only (kb-framework.md §9): meta/reference docs are excluded so
 # their illustrative checkboxes never count as real tasks.
-TASK_DIRS = {"domains", "projects", "meetings", "lessons-learned", "00-inbox", "journal", "people"}
+TASK_DIRS = {"domains", "projects", "meetings", "lessons-learned", "journal", "people"}
 
 
 def tracked_markdown() -> list[pathlib.Path]:
