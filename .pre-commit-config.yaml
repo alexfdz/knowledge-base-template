@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: kb-check
+        name: KB integrity (duplicate IDs, dangling references)
+        entry: python3 scripts/kb_check.py
+        language: system
+        pass_filenames: false
+        files: '\.md$'

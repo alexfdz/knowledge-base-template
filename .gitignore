@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+# editors / IDEs
+.idea/
+.vscode/
+
+# agent + local tooling scratch
+.claude/settings.local.json
+.claude/worktrees/
+
+# secrets
+.env
+*.local
