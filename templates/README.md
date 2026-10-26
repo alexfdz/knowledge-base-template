@@ -14,6 +14,7 @@ KB scannable and the integrity check meaningful.
 | [`person-tracker.md`](person-tracker.md) | An outreach funnel (recruitment, onboarding, sponsors) | `people/trackers/<campaign>.md` |
 | [`gap-analysis.md`](gap-analysis.md) | Our state cross-checked against an external standard | anywhere relevant |
 | [`external-system-context.md`](external-system-context.md) | Static-ID cache for an external tool | alongside the project that uses it |
+| [`sources-local.md`](sources-local.md) | The sensitive half of `sources.md` (credentials); gitignored, never committed | `sources.local.md` |
 
 Placeholders use `####` (for registry IDs) and `<angle brackets>` for prose to fill. Registry
 rows are added to the files under `registry/`, not here.
