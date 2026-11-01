@@ -7,3 +7,8 @@ repos:
         language: system
         pass_filenames: false
         files: '\.md$'
+      - id: no-local-files
+        name: Private *.local.md files stay untracked
+        entry: "*.local.md holds credentials; never commit it (keep it gitignored)"
+        language: fail
+        files: '\.local\.md$'

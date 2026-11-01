@@ -12,7 +12,8 @@ in. Read [`kb-framework.md`](kb-framework.md) for the model behind the structure
    `<subject>` / `<Subject>` placeholder with what this KB is about, and fill in the intro.
    Fill in [`context.md`](context.md) with the current state and the governance-authority
    ordering (`kb-framework.md` §8). Start [`sources.md`](sources.md) the first time you connect
-   an external tool — record its auth and gotchas there, not the secret.
+   an external tool — record its auth and gotchas there; the secret goes in the gitignored
+   `sources.local.md` (copy [`templates/sources-local.md`](templates/sources-local.md)).
 3. **Decide privacy.** If the KB will hold contact details or anything sensitive, keep the repo
    private and note it in `CLAUDE.md` (`kb-framework.md` §10, §13).
 4. **Pick the content language.** Structure stays English; choose one language for the subject

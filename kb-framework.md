@@ -1,6 +1,6 @@
 # KB Framework
 
-> Last updated: 2026-09-04
+> Last updated: 2026-10-26
 > Status: **template** — reusable scaffolding for a Second Brain knowledge base
 
 How this knowledge base is organized, which established frameworks it borrows from, and what
@@ -119,7 +119,14 @@ columns.
 **Where to *reach* a source** — the CLI, the auth, the gotchas — is a different layer from the
 registry and lives in [`sources.md`](sources.md). The registry's `location` says *where* a
 resource is; `sources.md` says *how to get in* (tool, account, how secrets are loaded, and the
-hard-won operational hazards). Keep secrets out of both — in a gitignored `.env` or the keyring.
+hard-won operational hazards).
+
+Keep secrets out of both. Each source's sensitive half — credentials, 2FA and recovery data,
+links that grant access on their own — lives in a gitignored `sources.local.md` under the same
+heading as in `sources.md`, created from
+[`templates/sources-local.md`](templates/sources-local.md); a `prek` hook blocks committing any
+`*.local.md`. Secrets an automation loads go in a gitignored `.env`, read by the script so the
+value never passes through an agent's session. `sources.md` defines what counts as sensitive.
 
 ---
 
@@ -301,6 +308,7 @@ as a forgotten post-mortem.
 | An external task tracker | The Second Brain stays self-contained; tasks are in-KB checkboxes (§9). A project *may* link out to a board your team runs, but state is never mirrored — that would create two sources of truth. |
 | YAML/JSON registries | Markdown stays readable and diffable in review; this KB is read by humans and agents, not parsed by services. |
 | A public repo by default | If the KB holds people's contact details or anything sensitive (§10), **keep it private**. Decide this per subject and record it in `CLAUDE.md`. |
+| Secrets in git, even in a private repo | A private repo is not a secret store: every clone, fork, backup and agent with repo access gets a copy, and git history keeps a leaked value after it is deleted. Credentials stay in gitignored files (§5). |
 
 ---
 
@@ -315,3 +323,4 @@ Record framework changes below.
 | 2026-08-27 | Template created. Borrows from PARA (§2), Johnny.Decimal cap (§3), ADR/MADR (§4), Dublin Core (§5). Subject-agnostic: people as a first-class entity (§10), in-KB tasks with a priority matrix instead of an external tracker (§9), the domain-plus-edition pattern for recurring events (§11). |
 | 2026-09-04 | Added the **access layer** `sources.md` (how to reach each external source — tool, auth, gotchas — distinct from the resource registry, §5). Documented the optional **`owner`** task field (§9). |
 | 2026-09-08 | Removed the `00-inbox/` staging directory: in an agent-native KB the agent triages captures directly, so the inbox went unused; quick untriaged notes fold into `journal/`. Dropped from the capture layer, §9, and `kb_todos.py` TASK_DIRS. |
+| 2026-10-26 | Split the access layer: credentials and other sensitive access data move to a gitignored `sources.local.md` (template `templates/sources-local.md`, commit blocked by a `prek` hook); automation secrets go in `.env` (§5). Added "secrets in git" to §13. |

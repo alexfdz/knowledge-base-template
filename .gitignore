@@ -12,3 +12,4 @@
 # secrets
 .env
 *.local
+*.local.md

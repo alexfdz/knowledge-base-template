@@ -21,7 +21,7 @@ effort. It consolidates knowledge, decisions and pending tasks for both humans a
 | People | [people/](people/) | Optional per-person notes · [trackers/](people/trackers/) outreach funnels |
 | Teams | [teams/](teams/) | Optional working-group pages (`WG-####` / short code) |
 | Capture | [meetings/](meetings/) · [lessons-learned/](lessons-learned/) · [journal/](journal/) | Raw inputs; every capture file gets an `R-####` row |
-| Reference | [context.md](context.md) · [sources.md](sources.md) · [glossary.md](glossary.md) | Current state of the subject; how to reach external sources (auth, gotchas); terms and controlled vocabulary |
+| Reference | [context.md](context.md) · [sources.md](sources.md) · [glossary.md](glossary.md) | Current state of the subject; how to reach external sources (auth, gotchas; credentials in the untracked `sources.local.md`); terms and controlled vocabulary |
 | Templates | [templates/](templates/) | Skeleton for every file type |
 
 ## Tasks

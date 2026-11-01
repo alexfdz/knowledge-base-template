@@ -76,8 +76,11 @@ Cross-domain, append-only. Facts live here; interpretation lives on the domain p
 
 - **Context**: [`context.md`](context.md) — the current state of the subject (orientation), and
   the governance-authority ordering (`kb-framework.md` §8).
-- **Sources & access**: [`sources.md`](sources.md) — how to reach every external source (tool,
-  auth, gotchas). Secrets live in a gitignored `.env`, never here.
+- **Sources & access**: [`sources.md`](sources.md) — how to reach every external source (what
+  it is, owner, tool, auth, gotchas). Its sensitive half (passwords, tokens, 2FA) lives in
+  `sources.local.md`: gitignored, local only, same section per source, created from
+  [`templates/sources-local.md`](templates/sources-local.md). Read it only when a task needs a
+  credential; never copy its values into a tracked file or into output.
 - **Glossary**: [`glossary.md`](glossary.md) — terms and controlled vocabulary.
 
 ## Knowledge capture
