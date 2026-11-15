@@ -1,6 +1,6 @@
 # KB Framework
 
-> Last updated: 2026-10-26
+> Last updated: 2026-11-15
 > Status: **template** — reusable scaffolding for a Second Brain knowledge base
 
 How this knowledge base is organized, which established frameworks it borrows from, and what
@@ -49,6 +49,13 @@ a domain; *this year's edition* ends, so it is a project. Same test settles ever
 **What we reject.** PARA's Archive-as-a-folder. Moving files on retirement breaks every link
 pointing at them. We use a **`status` field in place** instead — nothing ever moves, nothing
 404s.
+
+**Beyond the four buckets**, a few working folders each have one job: `teams/` (§6); the capture
+layer, `meetings/`, `lessons-learned/`, `journal/` and `raw/` (the source as it arrived:
+transcripts, chat exports, documents; every file hangs from its `R-####` row, and never holds
+credentials); `reports/` (recurring reports: one contract per report, saying who it is for, what
+it carries, where it comes from and how it is made, and one file per issue); `templates/`;
+`scripts/` (checks, views and source readers); and `.claude/` (the rules and the agent skills).
 
 ---
 
@@ -141,7 +148,8 @@ value never passes through an agent's session. `sources.md` defines what counts 
 | **Finding** | `F-0001` | `registry/findings.md` | `established` · `disputed` · `disproved` |
 | **Question** | `Q-0001` | `registry/questions.md` | `open` · `answered` · `dropped` |
 | **Person** | `M-0001` | `registry/people.md` | Members, contacts, collaborators, stakeholders — see §10 |
-| **Team / Working group** | short code — `WG-OPS` | `teams/<code>.md` | Optional; only when a group needs its own page |
+| **Idea** | `I-0001` | `registry/ideas.md` | A goal, an idea to try or a proposal — see below |
+| **Team / Working group** | short code — `WG-OPS` | `teams/<code>.md` | Optional; only when a group needs its own page. From `templates/team.md` |
 | **Task** | *none* | in the relevant page | In-KB checkboxes, see §9 |
 
 **Registry IDs are opaque and permanent.** Nothing mutable is encoded in them — no dates,
@@ -160,6 +168,15 @@ regardless of role.
 people"* is a finding. Conflating them is how a settled decision starts looking like an open
 debate — and how an observed fact gets overruled by someone with more authority who hasn't
 checked.
+
+### Ideas — what someone wants, before anyone decides
+
+An **idea** is something a person wants to achieve or try: a `goal` (an outcome being pursued),
+an `idea` (something to test) or a `proposal` (something to take to the governing body). It is not
+a decision — nobody has chosen yet — and not a task — it is not yet work. Brainstorms, personal
+reflections and "we should…" in a chat land here, numbered, so projects and tasks can cite them.
+When an idea is decided, its row links the resulting `D-####`; tasks that come from it cite it in
+their `fuente` (§9).
 
 ---
 
@@ -194,7 +211,8 @@ Small on purpose. Vocabularies nobody can remember are vocabularies nobody appli
 **Status** — Decision: `proposed` · `accepted` · `superseded` · `reversed` · `wont-do`.
 Question: `open` · `answered` · `dropped`. Finding: `established` · `disputed` · `disproved`.
 Project: `shaping` · `active` · `paused` · `done` · `cancelled`. Person: `active` · `prospect`
-· `lapsed` · `alumnus`.
+· `lapsed` · `alumnus`. Idea: `open` · `in-progress` · `done` · `dropped`. Task (the box, §9):
+`[ ]` pendiente · `[/]` en marcha · `[x]` hecha · `[-]` descartada.
 
 **Governance authority** for conflicting *decisions and opinions* (not facts — those are
 findings): follows the authority ordering this KB defines for its subject. Record that ordering
@@ -208,18 +226,77 @@ rank.
 ## §9 Tasks — in-KB TODOs with a deterministic priority
 
 There is no external tracker. Tasks live **in the page they belong to** (a project page, a
-domain page) under a `## Tasks` heading, as checkboxes:
+domain page, a team page) under a `## Tasks` heading, as checkboxes:
 
 ```
-- [ ] Confirm the venue deposit deadline | plazo: 2026-09-15 | complejidad: low | owner: @you
-- [x] Draft the announcement | plazo: 2026-09-01 | complejidad: medium | owner: @you
+- [/] Confirm the venue deposit deadline | plazo: 2026-09-15 | complejidad: low | owner: @treasury, @events | espera: @supplier | tags: venue | fuente: mail info@ sin-leer
+  - Contexto: the venue asked twice; the deposit secures the date.
+  - Propuesta: call them and pay by transfer.
+  - Enlace: [thread](https://mail.example.com/…)
+  - Contexto (2026-09-02): → en marcha. The treasurer asked for the invoice (mail info@ leído).
+  - Contexto (2026-09-05): → espera @supplier. The invoice has not arrived.
+- [x] Draft the announcement | plazo: 2026-09-01 | complejidad: medium | owner: @comms | fuente: reunión R-0012
+  - Contexto (2026-08-30): → hecha. Sent to the members (whatsapp R-0013).
 ```
 
-Every task carries **`plazo`** (due date, `YYYY-MM-DD` or `—`) and **`complejidad`**
-(`low` · `medium` · `high`). These two field names are the literal tokens `make todos`
-(`scripts/kb_todos.py`) parses — keep them verbatim. An optional **`owner: @handle`** names who
-holds the task — free-form (the priority matrix does not rank by it), but worth keeping in a
-multi-person KB so `## Tasks` says *who*, not only *what* and *when*. When an agent or human aggregates open
+**State is the box**, with the Obsidian Tasks convention, which any markdown viewer still shows
+as a checkbox:
+
+| Box | State | Meaning |
+|---|---|---|
+| `[ ]` | pendiente | open; nobody is on it yet |
+| `[/]` | en marcha | open; someone is on it |
+| `[x]` | hecha | done |
+| `[-]` | descartada | dropped: no longer needed, or decided against |
+
+**Fields** follow the text, separated by ` | `:
+
+- **`plazo`** (due date, `YYYY-MM-DD` or `—`) and **`complejidad`** (`low` · `medium` · `high`),
+  always. These two names are the literal tokens `make todos` (`scripts/kb_todos.py`) parses —
+  keep them verbatim.
+- **`owner`** — who holds the task: one or more **actors**, comma-separated. An actor is a role or
+  a team, never a person, so a task survives a change of people. The subject defines its actors in
+  one table, with who fills each one now (in this template: [`context.md`](context.md) → Actors,
+  the page `ACTORS_PAGE` in `scripts/kb_tasks.py` names); outside parties (kind `fuera`) are
+  actors too, but only for `espera`.
+- **`espera`** — optional: what an open task is waiting for, as one actor (inside or outside) or a
+  date (waiting until then). Waiting is not a state: a task can be `[ ]` or `[/]` and waiting.
+  This field is what builds the "your turn" and "waiting on" views.
+- **`tags`** — optional: topics, lowercase and comma-separated, to cut across pages (a task in the
+  events domain tagged `venue`, `budget`).
+- **`fuente`** — where the task came from, so it can be checked against its origin, filtered, and
+  closed with context. Vocabulary (several sources, comma-separated):
+
+| `fuente` | When |
+|---|---|
+| `reunión R-####` | A meeting's notes or transcript |
+| `whatsapp R-####` · `whatsapp <group>` | A chat; the group name when the chat has no `R-####` row yet |
+| `mail <box>@ sin-leer` · `mail <box>@ leído` | An email thread, and whether it was still unread when the task was taken; the thread link goes in `Enlace` |
+| `drive <account>@` · `form <account>@` | A document or a comment in it, or new answers to a form; the link goes in `Enlace` |
+| `idea I-####` | An idea or goal from the ideas registry (§6) |
+| `hallazgo F-####` · `decisión D-####` | The KB's own analysis: a finding or a decision that implies work |
+
+Optional sub-bullets under a task hold what the one-liner can't: **`Contexto`** (what happened and
+why it matters), **`Propuesta`** (the proposed solution) and **`Enlace`** (links to the source).
+
+**The history lives in the task.** Each dated **`Contexto (YYYY-MM-DD):`** line is one step,
+appended in date order and never rewritten; it ends with where it was seen, in brackets, in the
+`fuente` vocabulary. A step that changes the state starts with the new one: `→ en marcha.`,
+`→ espera @actor.`, `→ pendiente.` (no longer waiting), `→ hecha.`, `→ descartada.` The box says
+how the task is now, the dated lines say how it got there, and git keeps every edit. There is no
+separate log and no second copy of the state: views are generated from the tasks.
+
+**Views.** `make todos` lists the open tasks (`[ ]` and `[/]`) by the matrix below and filters by
+source, actor or tag (`FUENTE=mail`, `ACTOR=@treasury`, `TAG=venue`). `make roadmap` builds a page
+with the same tasks, a view per actor and a "your turn" list for the actors the KB's owner holds
+(`OWNER` in `scripts/kb_roadmap.py`). Done and dropped tasks stay in their page, with their
+history, and no view lists them.
+
+**Checks.** `make check` fails on a box other than the four, a `plazo` that is neither a date nor
+`—`, a missing `complejidad`, an unknown field, an `owner` that is not an actor that can hold work,
+or an `espera` that is neither an actor nor a date.
+
+When an agent or human aggregates open
 tasks across pages, they are ordered by a **deterministic priority matrix** — earliest deadline
 first, then lowest complexity first (so quick wins clear ahead of slow work with the same
 deadline):
@@ -234,7 +311,8 @@ deadline):
 
 **Why a matrix and not agent judgement.** Priority becomes reproducible and auditable: two
 different sessions produce the same ordering, and the reasoning is inspectable. `make todos`
-regenerates the ranked list on demand — the list is never stored, so it never goes stale.
+regenerates the ranked list on demand — the list is never stored, so it never goes stale. There is
+no separate priority field: something urgent gets a `plazo`, which is what moves it up.
 
 Tasks get **no ID and no registry**. They are cheap, disposable and completion-tracked by the
 checkbox. Anything durable a task produces (a decision, a finding, a resource) *does* get an ID.
@@ -324,3 +402,6 @@ Record framework changes below.
 | 2026-09-04 | Added the **access layer** `sources.md` (how to reach each external source — tool, auth, gotchas — distinct from the resource registry, §5). Documented the optional **`owner`** task field (§9). |
 | 2026-09-08 | Removed the `00-inbox/` staging directory: in an agent-native KB the agent triages captures directly, so the inbox went unused; quick untriaged notes fold into `journal/`. Dropped from the capture layer, §9, and `kb_todos.py` TASK_DIRS. |
 | 2026-10-26 | Split the access layer: credentials and other sensitive access data move to a gitignored `sources.local.md` (template `templates/sources-local.md`, commit blocked by a `prek` hook); automation secrets go in `.env` (§5). Added "secrets in git" to §13. |
+| 2026-10-27 | Added the **Idea** entity (`I-####`, `registry/ideas.md`: goals, ideas to try, proposals; §6, §8); `make check` validates `I-` IDs and `make stats` counts them. Tasks gain a **`fuente`** field with a controlled vocabulary (meeting, chat, mail box and read state, document or form, idea, finding or decision) and optional `Contexto` / `Propuesta` / `Enlace` sub-bullets; `make todos` shows and filters by source (§9). |
+| 2026-11-05 | Tasks (§9): four states in the box (pendiente, en marcha, hecha, descartada); `owner` takes one or more **actors** (roles and teams, defined in one table with who fills each now; the template keeps it in `context.md` → Actors) instead of a person; new optional `espera` (what an open task waits for) and `tags`; the history of a task is its dated `Contexto` lines, each with its source, and a state change starts with the new state. Task parsing moves to a shared `scripts/kb_tasks.py`; `make todos` filters by actor and tag; `make roadmap` (`scripts/kb_roadmap.py`) builds a page with projects, a month calendar, a view per actor, a "your turn" list and every open task with filters; `make check` validates tasks. Task examples with the full model in the domain, project and team templates. |
+| 2026-11-15 | Documented the working folders beyond the four PARA buckets (§2): `teams/` pages from the new `templates/team.md`, the `raw/` capture folder, `reports/` (one contract per recurring report), `templates/`, `scripts/` and `.claude/` (rules and agent skills). Domain pages gain an optional **How it works** section. Dates: `YYYY-MM-DD` in fields, headings, file names, registries and dated history lines; short dates allowed in running prose and in messages (`.claude/rules/base.md`). |

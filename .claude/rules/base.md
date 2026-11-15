@@ -13,7 +13,9 @@ and reference material.
   (domain pages, decisions, meeting notes, glossary definitions) and use it consistently; record
   the choice in `CLAUDE.md` → Language.
 - Use terms from `glossary.md` consistently.
-- Date format: `YYYY-MM-DD` everywhere.
+- Date format: `YYYY-MM-DD` in fields, headings, file names, registries and dated history lines
+  (`Contexto (YYYY-MM-DD)`). Running prose and messages for people (reports, chat messages) may
+  use a short date (`13-11`) when the year is obvious.
 - Every document has a `> Last updated: YYYY-MM-DD` line under its `# Title`.
 - Metadata is a **blockquote header** under the title, not YAML frontmatter (see
   `kb-framework.md` §13).

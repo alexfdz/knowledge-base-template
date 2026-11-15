@@ -34,8 +34,8 @@ answers "everything in that domain".
   entity/ID model, task and people models. **Read before adding structure.**
 - Project conventions: [`.claude/rules/base.md`](.claude/rules/base.md)
 - Rule-change process: [`.claude/rules/ai-feedback-learning-loop.md`](.claude/rules/ai-feedback-learning-loop.md)
-- Integrity: `make check` (runs `scripts/kb_check.py` as a `prek` hook) — duplicate IDs and
-  dangling references fail the commit.
+- Integrity: `make check` (runs `scripts/kb_check.py` as a `prek` hook) — duplicate IDs,
+  dangling references and malformed tasks fail the commit.
 
 ## Knowledge domains
 
@@ -57,6 +57,24 @@ project per edition).
 `projects/<key>.md` (kebab slug), then list it here as
 `- **[<key>](projects/<key>.md)** — <one line> — <status>`.
 
+## Teams
+
+Optional: one page per working group that needs its own, in [`teams/`](teams/) (`WG-<CODE>`):
+what it does, people, channels, state and needs, processes, its own `## Tasks`. Status `active` ·
+`at-risk` · `inactive` · `closed`. Copy [`templates/team.md`](templates/team.md) to
+`teams/WG-<CODE>.md`, then list it here.
+
+**None created yet.**
+
+## Reports
+
+Optional: recurring reports, each with a contract in [`reports/`](reports/) — audience, period,
+content, sources, procedure, format, privacy — and its issues in `reports/<key>/YYYY-MM-DD.md`.
+Write every issue from its contract; change the contract first when an issue needs something
+else. List each one here as `- **`<key>`** [<Title>](reports/<key>.md) — <status> · <one line>`.
+
+**None created yet.**
+
 ## Registries
 
 Cross-domain, append-only. Facts live here; interpretation lives on the domain page.
@@ -71,6 +89,8 @@ Cross-domain, append-only. Facts live here; interpretation lives on the domain p
   owners.
 - **People**: [`registry/people.md`](registry/people.md) — `M-####` members, contacts,
   collaborators, stakeholders.
+- **Ideas**: [`registry/ideas.md`](registry/ideas.md) — `I-####` goals, ideas to try and
+  proposals, before anyone decides. When one is decided, its row links the `D-####`.
 
 ## Reference
 
@@ -91,13 +111,27 @@ Every capture file gets an `R-####` row — a file without a registry row is inv
   Decisions → Resources). Filename `YYYY-MM-DD-topic.md`.
 - **Lessons learned**: [`lessons-learned/`](lessons-learned/) — learnings and living retros.
 - **Journal**: [`journal/`](journal/) — running personal log (and quick untriaged notes), `YYYY-MM-DD.md`.
+- **Raw**: [`raw/`](raw/) — source material as it arrived (transcripts, chat exports,
+  documents). Never credentials. Every file hangs from an `R-####` row. It is the original source,
+  not the reading layer: read it only when the page or the note is not enough.
 - **Templates**: [`templates/`](templates/) — skeletons for every file type.
 
 ## Tasks
 
-No external tracker. Tasks are in-KB checkboxes under `## Tasks` in the relevant page, each with
-`plazo` and `complejidad`; priority is the deterministic matrix in `kb-framework.md` §9. Run
-`make todos` for the ranked open-task list.
+No external tracker. Tasks are in-KB checkboxes under `## Tasks` in the relevant page
+(`kb-framework.md` §9). The box is the state: `[ ]` pendiente · `[/]` en marcha · `[x]` hecha ·
+`[-]` descartada. Each task has `plazo`, `complejidad` and `fuente` (where it came from:
+`reunión R-####`, `whatsapp R-####`, `mail <box>@ sin-leer|leído`, `drive <account>@`,
+`form <account>@`, `idea I-####`, `hallazgo F-####`, `decisión D-####`); `owner` with one or more
+**actors** — roles and teams, never people, from the table in [`context.md`](context.md) →
+Actors; optional `espera` (the actor or date an open task waits for) and `tags`; and optional
+`Contexto` / `Propuesta` / `Enlace` sub-bullets. Its history is its dated `Contexto (YYYY-MM-DD):`
+lines, each with its source; a line that changes the state starts with the new one (`→ hecha.`).
+Priority is the deterministic matrix in `kb-framework.md` §9 — something urgent gets a `plazo`.
+Run `make todos` for the ranked open-task list (filters: `FUENTE=mail`, `ACTOR=@lead`,
+`TAG=venue`). `make roadmap` builds `roadmap.html` (projects, a month calendar, a view per actor,
+"your turn", every open task with filters, and the open questions); it is gitignored and
+regenerated, never edited.
 
 ## Rigor
 
@@ -108,7 +142,8 @@ No external tracker. Tasks are in-KB checkboxes under `## Tasks` in the relevant
 
 ## Language
 
-Structure, filenames, field names and templates are in **English** (the task field tokens
-`plazo`/`complejidad` are the exception — the tooling parses them literally). Choose one language
-for the subject content (domain pages, decisions, meeting notes, glossary definitions) and use it
+Structure, filenames, field names and templates are in **English** (the task tokens — `plazo`,
+`complejidad`, `espera`, `fuente`, the box state names, the `fuente` vocabulary and the actor kind
+`fuera` — are the exception: the tooling parses them literally). Choose one language for the
+subject content (domain pages, decisions, meeting notes, glossary definitions) and use it
 consistently; record the choice here.

@@ -2,11 +2,11 @@ repos:
   - repo: local
     hooks:
       - id: kb-check
-        name: KB integrity (duplicate IDs, dangling references)
+        name: KB integrity (duplicate IDs, dangling references, tasks)
         entry: python3 scripts/kb_check.py
         language: system
         pass_filenames: false
-        files: '\.md$'
+        files: '(\.md|^scripts/kb_(check|tasks)\.py)$'
       - id: no-local-files
         name: Private *.local.md files stay untracked
         entry: "*.local.md holds credentials; never commit it (keep it gitignored)"
