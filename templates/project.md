@@ -32,7 +32,11 @@ on.>
 
 ## Tasks
 
-- [ ] <task> | plazo: YYYY-MM-DD | complejidad: low | owner: @
+- [ ] <task> | plazo: <YYYY-MM-DD or —> | complejidad: low | owner: @<actor> | espera: <optional: @actor or YYYY-MM-DD> | tags: <optional> | fuente: <reunión R-#### · whatsapp R-#### · mail <box>@ sin-leer/leído · drive <account>@ · idea I-#### · hallazgo F-#### · decisión D-####>
+  - Contexto: <optional: what happened and why it matters>
+  - Propuesta: <optional: proposed solution>
+  - Enlace: <optional: link to the source>
+  - Contexto (YYYY-MM-DD): <one step of its history; a step that changes the state starts with it: → en marcha. · → espera @actor. · → hecha. · → descartada.> (<fuente>)
 
 ## Log
 

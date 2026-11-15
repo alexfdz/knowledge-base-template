@@ -13,3 +13,9 @@
 .env
 *.local
 *.local.md
+
+# python
+__pycache__/
+
+# generated views (regenerate with make roadmap; never stored, kb-framework.md §9)
+roadmap.html

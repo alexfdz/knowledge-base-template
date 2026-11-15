@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Generada por scripts/kb_roadmap.py (make roadmap). No editar: se rehace desde las tareas de la KB. -->
+<title>Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: summary tiles, then the roadmap (project cards, a month calendar of dated tasks), then
+   every open task grouped by urgency with filters. Urgency always shows as text. */
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --ink: #141821; --ink-2: #4b5262; --muted: #6f7686;
+  --line: #dde2ea; --accent: #2346b8; --accent-soft: #e6ebfa;
+  --u-overdue: #b42318; --u-overdue-bg: #fde8e6;
+  --u-week: #a24a06; --u-week-bg: #fdf0dc;
+  --u-month: #7a5f00; --u-month-bg: #fbf3cf;
+  --u-later: #2346b8; --u-later-bg: #e6ebfa;
+  --u-none: #5d6472; --u-none-bg: #eceff3;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --surface: #1a1e26; --ink: #eef0f4; --ink-2: #b8bfcc; --muted: #8f97a7;
+    --line: #2c323d; --accent: #8fa8ff; --accent-soft: #1f2843;
+    --u-overdue: #ff8f80; --u-overdue-bg: #3b1d1a; --u-week: #f5a65b; --u-week-bg: #3a2714;
+    --u-month: #e6c84f; --u-month-bg: #33300f; --u-later: #8fa8ff; --u-later-bg: #1f2843;
+    --u-none: #a7aebb; --u-none-bg: #262b34;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1a1e26; --ink: #eef0f4; --ink-2: #b8bfcc; --muted: #8f97a7;
+  --line: #2c323d; --accent: #8fa8ff; --accent-soft: #1f2843;
+  --u-overdue: #ff8f80; --u-overdue-bg: #3b1d1a; --u-week: #f5a65b; --u-week-bg: #3a2714;
+  --u-month: #e6c84f; --u-month-bg: #33300f; --u-later: #8fa8ff; --u-later-bg: #1f2843;
+  --u-none: #a7aebb; --u-none-bg: #262b34;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; }
+a { color: var(--accent); }
+abbr { text-decoration: underline dotted; text-underline-offset: 2px; cursor: help; }
+code { font-family: var(--font-mono); font-size: 0.86em; }
+.page { max-width: 1240px; margin: 0 auto; padding: 36px max(16px, env(safe-area-inset-right, 0px)) 64px max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; font-stretch: 112%; line-height: 1.05; }
+h2 { font-size: 1.45rem; font-weight: 700; font-stretch: 105%; }
+h3 { font-size: 1rem; font-weight: 700; }
+p { margin: 0; max-width: 72ch; }
+header, section { display: grid; gap: 16px; min-width: 0; }
+.page > * { min-width: 0; }
+.proj, .ev .t, .task .text, .task .body, .lede { overflow-wrap: anywhere; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.08rem; color: var(--ink-2); }
+.hint { color: var(--ink-2); font-size: 0.92rem; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 2px; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.tile:hover, .tile:focus-visible { border-color: var(--accent); outline: none; }
+.tile b { font-family: var(--font-display); font-size: 1.9rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tile span { color: var(--ink-2); font-size: 0.9rem; }
+
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.proj { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start; text-align: left; font: inherit; color: inherit; cursor: pointer; min-width: 0; }
+.proj:hover, .proj:focus-visible { border-color: var(--accent); outline: none; }
+.proj .meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); }
+.pill { font-family: var(--font-mono); font-size: 0.72rem; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.proj .next { font-size: 0.9rem; color: var(--ink-2); }
+.proj .next b { color: var(--ink); font-weight: 600; }
+.actors { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.act { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.act:hover, .act:focus-visible { border-color: var(--accent); outline: none; }
+.act.mine { border-color: var(--accent); }
+.act h3 { font-size: 1rem; }
+.act .now { font-size: 0.82rem; color: var(--ink-2); }
+.act .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-2); }
+.state { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); white-space: nowrap; }
+.wait { font-family: var(--font-mono); font-size: 0.74rem; padding: 1px 8px; border-radius: 6px; border: 1px dashed var(--ink-2); color: var(--ink); white-space: nowrap; }
+.tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); }
+.task .body ol { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--ink-2); font-size: 0.93rem; }
+.task .body ol .d { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); }
+
+.cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; align-items: start; }
+.month { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 8px; min-width: 0; }
+.month h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.month h3 small { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+.ev { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 8px; padding: 6px 8px 6px 0; border-left: 3px solid var(--u-none); padding-left: 8px; border-radius: 2px; text-align: left; font: inherit; color: inherit; background: none; border-top: 0; border-right: 0; border-bottom: 0; cursor: pointer; }
+.ev:hover, .ev:focus-visible { background: var(--bg); outline: none; }
+.ev .d { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ev .t { font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ev .o { grid-column: 2; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+
+.filters { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 10px 0; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters input[type="search"], .filters select { font: inherit; font-size: 0.92rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; min-width: 0; }
+.filters input[type="search"] { flex: 1 1 240px; }
+.filters select { flex: 0 1 220px; }
+.chip { font: inherit; font-size: 0.82rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+
+.group { display: grid; gap: 8px; }
+.group > h3 { display: flex; gap: 10px; align-items: baseline; }
+.group > h3 small { font-family: var(--font-mono); font-weight: 400; font-size: 0.8rem; color: var(--muted); }
+.task { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.task.flash { outline: 2px solid var(--accent); }
+.task summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; }
+.task summary::-webkit-details-marker { display: none; }
+.task .when { display: grid; justify-items: start; align-content: start; gap: 4px; min-width: 96px; }
+.task .date { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.task .main { display: grid; gap: 6px; min-width: 0; }
+.task .text { font-weight: 600; }
+.task .line { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 0.82rem; color: var(--ink-2); }
+.who { font-family: var(--font-mono); font-size: 0.76rem; }
+.who.none { color: var(--muted); font-style: italic; }
+.src { display: inline-flex; gap: 5px; align-items: center; font-size: 0.76rem; padding: 1px 8px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); max-width: 100%; }
+.src i { font-style: normal; font-family: var(--font-mono); color: var(--muted); }
+.src span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.urg { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.u-overdue { color: var(--u-overdue); background: var(--u-overdue-bg); border-color: var(--u-overdue); }
+.u-week { color: var(--u-week); background: var(--u-week-bg); border-color: var(--u-week); }
+.u-month { color: var(--u-month); background: var(--u-month-bg); border-color: var(--u-month); }
+.u-later { color: var(--u-later); background: var(--u-later-bg); border-color: var(--u-later); }
+.u-none { color: var(--u-none); background: var(--u-none-bg); border-color: var(--u-none); }
+.ev.u-overdue, .ev.u-week, .ev.u-month, .ev.u-later, .ev.u-none { background: none; color: inherit; }
+.ev.u-overdue:hover, .ev.u-week:hover, .ev.u-month:hover, .ev.u-later:hover { background: var(--bg); }
+.task .body { padding: 0 14px 14px; display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; margin: 0 0 0; }
+.task .body p { color: var(--ink-2); font-size: 0.93rem; }
+.task .body p b { color: var(--ink); }
+.task .body .file { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); }
+.empty { color: var(--muted); padding: 20px 0; }
+.foot { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (max-width: 560px) {
+  .task summary { grid-template-columns: 1fr; }
+  .task .when { grid-auto-flow: column; justify-content: start; align-items: center; min-width: 0; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <span class="eyebrow" id="eyebrow">Roadmap</span>
+    <h1>Roadmap</h1>
+    <p class="lede">Todo lo que tenemos pendiente, sacado de la KB: primero la hoja de ruta (proyectos y calendario), después quién lleva qué (cargos y equipos) y cada tarea con su estado, urgencia, fecha, a quién espera y de dónde sale. Pulsa una tarea para ver el contexto, la propuesta, su historia y el enlace a la fuente.</p>
+    <div class="tiles" id="tiles"></div>
+  </header>
+
+  <section aria-labelledby="h-roadmap">
+    <h2 id="h-roadmap">Hoja de ruta</h2>
+    <h3>Proyectos</h3>
+    <div class="projects" id="projects"></div>
+    <h3>Calendario</h3>
+    <p class="hint">Las tareas con fecha, por mes. El color y la etiqueta marcan la urgencia; pulsa una para ir a su ficha.</p>
+    <div class="cal" id="cal"></div>
+  </section>
+
+  <section aria-labelledby="h-actors">
+    <h2 id="h-actors">Quién lleva qué</h2>
+    <p class="hint">Una tarjeta por actor (cargo o equipo) con tareas abiertas: las que lleva, cuántas esperan a otro y cuántas le esperan a él. Las marcadas son las tuyas. Pulsa una para ver sus tareas.</p>
+    <div class="actors" id="actors"></div>
+  </section>
+
+  <section aria-labelledby="h-tasks">
+    <h2 id="h-tasks">Tareas</h2>
+    <p class="hint">Ordenadas como <code>make todos</code>: primero la fecha más cercana y, con la misma fecha, la más sencilla. «Sin asignar» quiere decir que no está claro quién debería hacerla; «espera» dice a quién o a qué está esperando.</p>
+    <div class="filters">
+      <div class="row">
+        <input type="search" id="q" placeholder="Buscar (texto, actor, tema, buzón…)" aria-label="Buscar tareas">
+        <select id="owner" aria-label="Actor"></select>
+        <select id="area" aria-label="Página de la KB"></select>
+      </div>
+      <div class="row" id="stChips" aria-label="Estado"></div>
+      <div class="row" id="urgChips" aria-label="Urgencia"></div>
+      <div class="row" id="srcChips" aria-label="Fuente"></div>
+      <span class="count" id="count"></span>
+    </div>
+    <div id="list" class="group"></div>
+  </section>
+
+  <section aria-labelledby="h-q">
+    <h2 id="h-q">Dudas abiertas</h2>
+    <p class="hint">Las preguntas pendientes del registro (<code>registry/questions.md</code>): quién tiene que resolverla y qué la resolvería.</p>
+    <div id="questions" class="group"></div>
+  </section>
+
+  <p class="foot" id="foot"></p>
+</div>
+<script>
+const DATA = /*DATA*/null;
+const URG = [
+  ["overdue", "Vencida"], ["week", "Próximos 7 días"], ["month", "Próximos 30 días"],
+  ["later", "Más adelante"], ["none", "Sin fecha"],
+];
+const URG_LABEL = Object.fromEntries(URG);
+const SRC = [["mail", "Correo"], ["reunión", "Reunión"], ["whatsapp", "WhatsApp"], ["drive", "Drive"], ["form", "Formulario"], ["idea", "Idea"], ["hallazgo", "Hallazgo"], ["decisión", "Decisión"]];
+const COMP = { low: 0, medium: 1, high: 2 };
+const ST = [["pendiente", "Pendiente"], ["en marcha", "En marcha"], ["espera", "Esperando"]];
+const ACT = Object.fromEntries(DATA.actors.map((a) => [a.code, a]));
+const MINE = new Set(DATA.actors.filter((a) => a.mine).map((a) => a.code));
+const actorName = (code) => (ACT[code] ? ACT[code].what : code);
+const COMP_LABEL = { low: "baja", medium: "media", high: "alta" };
+const STATUS = { shaping: "en preparación", active: "activo", paused: "pausado", done: "hecho", cancelled: "cancelado" };
+const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const today = new Date(DATA.today + "T00:00:00");
+const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+DATA.tasks.forEach((t, i) => {
+  t.id = "t" + i;
+  t.days = t.plazo ? Math.round((new Date(t.plazo + "T00:00:00") - today) / 86400000) : null;
+  t.urg = t.days === null ? "none" : t.days < 0 ? "overdue" : t.days <= 7 ? "week" : t.days <= 30 ? "month" : "later";
+  t.srcTypes = [...new Set(t.fuente.map((f) => f.split(" ")[0]))];
+  t.waits = t.espera && !/^\d{4}-/.test(t.espera) ? t.espera : "";
+  t.mine = (t.owners.some((o) => MINE.has(o)) && (!t.waits || MINE.has(t.waits))) || MINE.has(t.waits);
+  t.search = (t.plain + " " + t.owners.map((o) => o + " " + actorName(o)).join(" ") + " " + t.espera + " " + t.tags.join(" ") + " " + t.fuente.join(" ") + " " + t.area).toLowerCase();
+});
+DATA.tasks.sort((a, b) => (a.plazo || "9999") .localeCompare(b.plazo || "9999") || (COMP[a.complejidad] ?? 1) - (COMP[b.complejidad] ?? 1));
+
+function fmtDate(p) {
+  const d = new Date(p + "T00:00:00");
+  return d.getDate() + " " + MONTHS[d.getMonth()].slice(0, 3) + (d.getFullYear() !== today.getFullYear() ? " " + d.getFullYear() : "");
+}
+function relDays(t) {
+  if (t.days === null) return "";
+  if (t.days === 0) return "hoy";
+  if (t.days === 1) return "mañana";
+  if (t.days < 0) return "hace " + -t.days + " d";
+  return "en " + t.days + " d";
+}
+function srcChip(f) {
+  const [type, ...rest] = f.split(" ");
+  let label = rest.join(" ");
+  let title = f;
+  const id = label.match(/^[RFDI]-\d{4}$/);
+  if (id && DATA.sourceLabels[label]) {
+    title = label + " · " + DATA.sourceLabels[label];
+    const desc = DATA.sourceLabels[label];
+    label = label + " · " + (desc.length > 70 ? desc.slice(0, 69) + "…" : desc);
+  }
+  if (type === "mail") label = label.replace(" sin-leer", " · sin leer").replace(" leído", " · leído");
+  return `<span class="src" title="${esc(title)}"><i>${esc(type)}</i><span>${esc(label)}</span></span>`;
+}
+
+const state = { q: "", owner: "", area: "", st: new Set(), urg: new Set(), src: new Set() };
+
+function matches(t) {
+  if (state.q && !t.search.includes(state.q)) return false;
+  if (state.owner === "__none" && t.owners.length) return false;
+  if (state.owner === "__mine" && !t.mine) return false;
+  if (state.owner && !state.owner.startsWith("__") && !t.owners.includes(state.owner) && t.espera !== state.owner) return false;
+  if (state.st.size && !(state.st.has(t.state) || (state.st.has("espera") && t.espera))) return false;
+  if (state.area && t.area !== state.area) return false;
+  if (state.urg.size && !state.urg.has(t.urg)) return false;
+  if (state.src.size && !t.srcTypes.some((s) => state.src.has(s))) return false;
+  return true;
+}
+
+function renderTiles() {
+  const n = (f) => DATA.tasks.filter(f).length;
+  const tiles = [
+    ["Tareas abiertas", DATA.tasks.length, () => resetFilters()],
+    ["Vencidas", n((t) => t.urg === "overdue"), () => setOnly("urg", "overdue")],
+    ["Próximos 7 días", n((t) => t.urg === "week"), () => setOnly("urg", "week")],
+    ["Te toca a ti", n((t) => t.mine), () => { resetFilters(); state.owner = "__mine"; el("owner").value = "__mine"; renderList(); }],
+    ["Sin asignar", n((t) => !t.owners.length), () => { resetFilters(); state.owner = "__none"; el("owner").value = "__none"; renderList(); }],
+    ["Sin fecha", n((t) => t.urg === "none"), () => setOnly("urg", "none")],
+    ["Dudas abiertas", DATA.questions.length, () => el("h-q").scrollIntoView({ behavior: "smooth" })],
+  ];
+  el("tiles").innerHTML = "";
+  tiles.forEach(([label, value, fn]) => {
+    const b = document.createElement("button");
+    b.className = "tile";
+    b.innerHTML = `<b>${value}</b><span>${label}</span>`;
+    b.onclick = () => { fn(); if (label !== "Dudas abiertas") el("h-tasks").scrollIntoView({ behavior: "smooth" }); };
+    el("tiles").append(b);
+  });
+}
+
+function renderProjects() {
+  el("projects").innerHTML = "";
+  DATA.projects.forEach((p) => {
+    const ts = DATA.tasks.filter((t) => t.file === p.file);
+    const next = ts.find((t) => t.plazo);
+    const over = ts.filter((t) => t.urg === "overdue").length;
+    const b = document.createElement("button");
+    b.className = "proj";
+    b.innerHTML = `<h3>${esc(p.title)}</h3>
+      <div class="meta"><span class="pill">${esc(STATUS[p.status] || p.status)}</span><span>${esc(p.period)}</span></div>
+      <div class="meta"><span>${ts.length} tareas abiertas</span>${over ? `<span class="urg u-overdue">${over} vencidas</span>` : ""}</div>
+      <p class="next">${next ? `Próxima: <b>${fmtDate(next.plazo)}</b> · ${next.text}` : "Sin tareas con fecha."}</p>`;
+    b.querySelectorAll("a").forEach((a) => a.replaceWith(a.textContent));
+    b.onclick = () => { resetFilters(); state.area = ts[0] ? ts[0].area : ""; el("area").value = state.area; renderList(); el("h-tasks").scrollIntoView({ behavior: "smooth" }); };
+    el("projects").append(b);
+  });
+}
+
+function renderActors() {
+  el("actors").innerHTML = "";
+  DATA.actors.forEach((a) => {
+    const holds = DATA.tasks.filter((t) => t.owners.includes(a.code));
+    const waitedBy = DATA.tasks.filter((t) => t.espera === a.code).length;
+    if (!holds.length && !waitedBy) return;
+    const waiting = holds.filter((t) => t.waits && t.waits !== a.code).length;
+    const over = holds.filter((t) => t.urg === "overdue").length;
+    const b = document.createElement("button");
+    b.className = "act" + (a.mine ? " mine" : "");
+    b.innerHTML = `<h3>${esc(a.what)}</h3><span class="now">${esc(a.code)} · ${esc(a.now)}</span>
+      <div class="meta"><span>lleva ${holds.length}</span>${waiting ? `<span>esperan a otro ${waiting}</span>` : ""}${waitedBy ? `<span>le esperan ${waitedBy}</span>` : ""}${over ? `<span class="urg u-overdue">${over} vencidas</span>` : ""}</div>`;
+    b.onclick = () => { resetFilters(); state.owner = a.code; el("owner").value = a.code; renderList(); el("h-tasks").scrollIntoView({ behavior: "smooth" }); };
+    el("actors").append(b);
+  });
+}
+
+function renderCalendar() {
+  const dated = DATA.tasks.filter((t) => t.plazo);
+  const cols = new Map();
+  const over = dated.filter((t) => t.urg === "overdue");
+  if (over.length) cols.set("Vencidas", over);
+  dated.filter((t) => t.urg !== "overdue").forEach((t) => {
+    const d = new Date(t.plazo + "T00:00:00");
+    const key = MONTHS[d.getMonth()] + " " + d.getFullYear();
+    if (!cols.has(key)) cols.set(key, []);
+    cols.get(key).push(t);
+  });
+  el("cal").innerHTML = "";
+  cols.forEach((ts, key) => {
+    const m = document.createElement("div");
+    m.className = "month";
+    m.innerHTML = `<h3><span>${esc(key.charAt(0).toUpperCase() + key.slice(1))}</span><small>${ts.length}</small></h3>`;
+    ts.forEach((t) => {
+      const b = document.createElement("button");
+      b.className = "ev u-" + t.urg;
+      b.style.borderLeftColor = `var(--u-${t.urg})`;
+      b.title = URG_LABEL[t.urg];
+      b.innerHTML = `<span class="d">${fmtDate(t.plazo)}</span><span class="t">${t.text}</span><span class="o">${esc(t.owners.join(", ") || "sin asignar")}</span>`;
+      b.querySelectorAll("a").forEach((a) => a.replaceWith(a.textContent));
+      b.onclick = () => focusTask(t.id);
+      m.append(b);
+    });
+    el("cal").append(m);
+  });
+}
+
+function taskCard(t) {
+  const urg = `<span class="urg u-${t.urg}">${URG_LABEL[t.urg]}</span>`;
+  const date = t.plazo ? `<span class="date">${fmtDate(t.plazo)} · ${relDays(t)}</span>` : `<span class="date">—</span>`;
+  const who = t.owners.length ? t.owners.map((o) => `<span class="who" title="${esc(actorName(o))}">${esc(o)}</span>`).join("") : `<span class="who none">sin asignar</span>`;
+  const st = t.state !== "pendiente" ? `<span class="state">${esc(t.state)}</span>` : "";
+  const wait = t.espera ? `<span class="wait" title="${esc(actorName(t.espera))}">espera ${esc(t.espera)}</span>` : "";
+  const tags = t.tags.map((g) => `<span class="tag">#${esc(g)}</span>`).join("");
+  const srcs = t.fuente.length ? t.fuente.map(srcChip).join("") : `<span class="src"><i>fuente</i><span>sin registrar</span></span>`;
+  const body = [
+    t.contexto && `<p><b>Contexto:</b> ${t.contexto}</p>`,
+    t.propuesta && `<p><b>Propuesta:</b> ${t.propuesta}</p>`,
+    t.enlace && `<p><b>Enlace:</b> ${t.enlace}</p>`,
+    t.history.length && `<p><b>Historia:</b></p><ol>${t.history.map((h) => `<li><span class="d">${fmtDate(h.date)}</span> · ${h.text}</li>`).join("")}</ol>`,
+    `<p class="file">Complejidad ${COMP_LABEL[t.complejidad] || t.complejidad} · <a href="${esc(t.file)}">${esc(t.file)}</a> · ${esc(t.area)}</p>`,
+  ].filter(Boolean).join("");
+  return `<details class="task" id="${t.id}"><summary>
+    <div class="when">${urg}${date}</div>
+    <div class="main"><span class="text">${t.text}</span><div class="line">${st}${who}${wait}${tags}${srcs}</div></div>
+  </summary><div class="body">${body}</div></details>`;
+}
+
+function renderList() {
+  const shown = DATA.tasks.filter(matches);
+  el("count").textContent = shown.length + " de " + DATA.tasks.length + " tareas";
+  if (!shown.length) { el("list").innerHTML = `<p class="empty">Ninguna tarea con estos filtros.</p>`; return; }
+  el("list").innerHTML = URG.map(([key, label]) => {
+    const ts = shown.filter((t) => t.urg === key);
+    return ts.length ? `<div class="group"><h3>${label} <small>${ts.length}</small></h3>${ts.map(taskCard).join("")}</div>` : "";
+  }).join("");
+  el("list").querySelectorAll("summary a").forEach((a) => a.addEventListener("click", (e) => e.stopPropagation()));
+}
+
+function renderQuestions() {
+  const qs = [...DATA.questions].sort((a, b) => b.date.localeCompare(a.date));
+  el("questions").innerHTML = qs.length ? qs.map((q) => `<details class="task"><summary>
+    <div class="when"><span class="urg u-later">${esc(q.id)}</span><span class="date">${fmtDate(q.date)}</span></div>
+    <div class="main"><span class="text">${q.question}</span><div class="line"><span class="who">${q.owner}</span></div></div>
+  </summary><div class="body"><p><b>Qué la resuelve:</b> ${q.settles}</p></div></details>`).join("") : `<p class="empty">No hay dudas abiertas.</p>`;
+}
+
+function setOnly(kind, value) {
+  resetFilters();
+  state[kind].add(value);
+  syncChips();
+  renderList();
+}
+function resetFilters() {
+  Object.assign(state, { q: "", owner: "", area: "", st: new Set(), urg: new Set(), src: new Set() });
+  el("q").value = ""; el("owner").value = ""; el("area").value = "";
+  syncChips();
+  renderList();
+}
+function focusTask(id) {
+  resetFilters();
+  const d = el(id);
+  if (!d) return;
+  d.open = true;
+  d.classList.add("flash");
+  d.scrollIntoView({ behavior: "smooth", block: "center" });
+  setTimeout(() => d.classList.remove("flash"), 1800);
+}
+
+function buildFilters() {
+  const count = (code) => DATA.tasks.filter((t) => t.owners.includes(code) || t.espera === code).length;
+  const used = DATA.actors.filter((a) => count(a.code));
+  el("owner").innerHTML = `<option value="">Todos los actores</option><option value="__mine">Te toca a ti (${DATA.tasks.filter((t) => t.mine).length})</option><option value="__none">Sin asignar (${DATA.tasks.filter((t) => !t.owners.length).length})</option>` +
+    used.map((a) => `<option value="${esc(a.code)}">${esc(a.what)} · ${esc(a.code)} (${count(a.code)})</option>`).join("");
+  const areas = [...new Set(DATA.tasks.map((t) => t.area))].sort((a, b) => a.localeCompare(b, "es"));
+  el("area").innerHTML = `<option value="">Todas las páginas</option>` + areas.map((a) => `<option value="${esc(a)}">${esc(a)}</option>`).join("");
+  el("stChips").innerHTML = ST.map(([k, l]) => `<button class="chip" data-kind="st" data-v="${k}" aria-pressed="false">${l} (${DATA.tasks.filter((t) => (k === "espera" ? t.espera : t.state === k)).length})</button>`).join("");
+  el("urgChips").innerHTML = URG.map(([k, l]) => `<button class="chip" data-kind="urg" data-v="${k}" aria-pressed="false">${l}</button>`).join("");
+  el("srcChips").innerHTML = SRC.map(([k, l]) => `<button class="chip" data-kind="src" data-v="${k}" aria-pressed="false">${l} (${DATA.tasks.filter((t) => t.srcTypes.includes(k)).length})</button>`).join("");
+  document.querySelectorAll(".chip").forEach((c) => c.addEventListener("click", () => {
+    const set = state[c.dataset.kind];
+    set.has(c.dataset.v) ? set.delete(c.dataset.v) : set.add(c.dataset.v);
+    syncChips();
+    renderList();
+  }));
+  el("q").addEventListener("input", (e) => { state.q = e.target.value.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); renderList(); });
+  el("owner").addEventListener("change", (e) => { state.owner = e.target.value; renderList(); });
+  el("area").addEventListener("change", (e) => { state.area = e.target.value; renderList(); });
+}
+function syncChips() {
+  document.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", state[c.dataset.kind].has(c.dataset.v)));
+}
+
+el("eyebrow").textContent = "Roadmap · generado el " + fmtDate(DATA.today) + " " + today.getFullYear();
+el("foot").textContent = "Generado por scripts/kb_roadmap.py desde las tareas de la KB (kb-framework.md §9). Para actualizarlo: make roadmap.";
+buildFilters();
+renderTiles();
+renderProjects();
+renderActors();
+renderCalendar();
+renderList();
+renderQuestions();
+</script>
+</body>
+</html>

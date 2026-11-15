@@ -1,75 +1,62 @@
 #!/usr/bin/env python3
 """Aggregate open tasks across the KB and rank them by the priority matrix.
 
-A task is a markdown checkbox with the KB fields, e.g.:
-    - [ ] Confirm venue deposit | plazo: 2026-09-15 | complejidad: low | owner: @alex
+A task is a markdown checkbox with the KB fields (kb-framework.md §9), e.g.:
+    - [/] Confirm venue deposit | plazo: 2026-09-15 | complejidad: low | owner: @treasury
+      | espera: @supplier | fuente: mail info@ sin-leer
 
-Ranking (kb-framework.md §9): earliest `plazo` first (no date last), then lowest
-`complejidad` first. The list is regenerated on demand; it is never stored.
+Open means `[ ]` (pendiente) or `[/]` (en marcha). Ranking: earliest `plazo` first (no date
+last), then lowest `complejidad` first. The list is regenerated on demand; it is never stored.
+
+Usage: kb_todos.py [--fuente TEXT] [--actor @CODE] [--tag TAG]
 """
 
-import pathlib
-import re
-import subprocess
+import argparse
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-OPEN_RE = re.compile(r"^\s*- \[ \]\s+(.*)$")
-PLAZO_RE = re.compile(r"plazo:\s*([0-9]{4}-[0-9]{2}-[0-9]{2})", re.IGNORECASE)
-COMPLEJIDAD_RE = re.compile(r"complejidad:\s*(low|medium|high)", re.IGNORECASE)
+from kb_tasks import STATES, Task, all_tasks
+
 COMPLEXITY_ORDER = {"low": 0, "medium": 1, "high": 2}
 NO_DATE = "9999-99-99"
 
 
-# Tasks live in these areas only (kb-framework.md §9): meta/reference docs are excluded so
-# their illustrative checkboxes never count as real tasks.
-TASK_DIRS = {"domains", "projects", "meetings", "lessons-learned", "journal", "people"}
+def plazo(task: Task) -> str:
+    value = task.fields.get("plazo", "")
+    return value if value[:2] == "20" else NO_DATE
 
 
-def tracked_markdown() -> list[pathlib.Path]:
-    out = subprocess.run(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "*.md"],
-        cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout
-    files = []
-    for line in out.splitlines():
-        if not line:
-            continue
-        rel = pathlib.Path(line)
-        if rel.parts and rel.parts[0] in TASK_DIRS:
-            files.append(ROOT / line)
-    return files
+def complexity(task: Task) -> str:
+    value = task.fields.get("complejidad", "medium").lower()
+    return value if value in COMPLEXITY_ORDER else "medium"
 
 
-def collect() -> list[dict]:
-    tasks = []
-    for md in tracked_markdown():
-        for line in md.read_text().splitlines():
-            m = OPEN_RE.match(line)
-            if not m:
-                continue
-            body = m.group(1)
-            plazo = PLAZO_RE.search(body)
-            comp = COMPLEJIDAD_RE.search(body)
-            tasks.append({
-                "text": body.split("|")[0].strip(),
-                "plazo": plazo.group(1) if plazo else NO_DATE,
-                "complejidad": comp.group(1).lower() if comp else "medium",
-                "file": str(md.relative_to(ROOT)),
-            })
-    return tasks
+def keep(task: Task, args: argparse.Namespace) -> bool:
+    if args.fuente and args.fuente.lower() not in task.fields.get("fuente", "").lower():
+        return False
+    if args.actor and args.actor not in task.owners + [task.fields.get("espera", "")]:
+        return False
+    return not (args.tag and args.tag.lower() not in task.tags)
 
 
 def main() -> int:
-    tasks = collect()
-    tasks.sort(key=lambda t: (t["plazo"], COMPLEXITY_ORDER[t["complejidad"]]))
+    parser = argparse.ArgumentParser(description="Ranked list of open tasks across the KB.")
+    parser.add_argument("--fuente", help="only tasks whose `fuente` contains this text")
+    parser.add_argument("--actor", help="only tasks this actor holds or that wait on it (@lead)")
+    parser.add_argument("--tag", help="only tasks with this tag")
+    args = parser.parse_args()
+
+    tasks = [t for t in all_tasks() if t.is_open and keep(t, args)]
+    tasks.sort(key=lambda t: (plazo(t), COMPLEXITY_ORDER[complexity(t)]))
     if not tasks:
         print("No open tasks.")
         return 0
-    width = max(len(t["complejidad"]) for t in tasks)
     for t in tasks:
-        plazo = "—         " if t["plazo"] == NO_DATE else t["plazo"]
-        print(f"{plazo}  {t['complejidad']:<{width}}  {t['text']}  ({t['file']})")
+        when = "—         " if plazo(t) == NO_DATE else plazo(t)
+        who = ", ".join(t.owners) or "no owner"
+        wait = f" · espera {t.fields['espera']}" if t.fields.get("espera") else ""
+        state = "" if t.box == " " else f"[{STATES[t.box]}] "
+        source = t.fields.get("fuente", "—")
+        print(f"{when}  {complexity(t):<6}  {state}{t.text}  ({who}{wait})  [{source}]  ({t.rel})")
     print(f"\n{len(tasks)} open task(s).")
     return 0
 

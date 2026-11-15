@@ -15,11 +15,13 @@ KB scannable and the integrity check meaningful.
 | [`gap-analysis.md`](gap-analysis.md) | Our state cross-checked against an external standard | anywhere relevant |
 | [`external-system-context.md`](external-system-context.md) | Static-ID cache for an external tool | alongside the project that uses it |
 | [`sources-local.md`](sources-local.md) | The sensitive half of `sources.md` (credentials); gitignored, never committed | `sources.local.md` |
+| [`team.md`](team.md) | A working group: status, people, channels, needs | `teams/WG-<CODE>.md` |
 
 Placeholders use `####` (for registry IDs) and `<angle brackets>` for prose to fill. Registry
 rows are added to the files under `registry/`, not here.
 
 Section headings are in English. Field names, status values and IDs stay as defined in
-[`../kb-framework.md`](../kb-framework.md); the task field tokens `plazo`/`complejidad` are kept
+[`../kb-framework.md`](../kb-framework.md); the task field tokens (`plazo`, `complejidad`,
+`owner`, `espera`, `tags`, `fuente`) and the box states (`[ ]` `[/]` `[x]` `[-]`) are kept
 verbatim because the tooling parses them. Pick one language for the subject content and use it
 consistently across pages.
